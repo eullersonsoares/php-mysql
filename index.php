@@ -43,21 +43,21 @@
     <main>
         <section class="container-banner">
             <div class="container-texto-banner">
-                <img src="<?= dirname($_SERVER['PHP_SELF'])  . 'img' . DIRECTORY_SEPARATOR . 'logo-serenatto.png'; ?>" class="logo" alt="logo-serenatto">
+                <img src="<?= dirname($_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'logo-serenatto.png'; ?>" class="logo" alt="logo-serenatto">
             </div>
         </section>
         <h2>Cardápio Digital</h2>
         <section class="container-cafe-manha">
             <div class="container-cafe-manha-titulo">
                 <h3>Opções para o Café</h3>
-                <img class= "ornaments" src="<?= dirname($_SERVER['PHP_SELF'])  . 'img' . DIRECTORY_SEPARATOR . 'ornaments-coffee.png'; ?>" alt="ornaments">
+                <img class= "ornaments" src="<?= dirname($_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'ornaments-coffee.png'; ?>" alt="ornaments">
             </div>
             <div class="container-cafe-manha-produtos">
 
                 <?php foreach ($produtosCafe as $cafe):?>
                     <div class="container-produto">
                         <div class="container-foto">
-                            <img src="<?= dirname($_SERVER['PHP_SELF'])  . 'img' . DIRECTORY_SEPARATOR . $cafe['imagem']; ?>" alt="<?= $cafe['nome']; ?>">
+                            <img src="<?= dirname($_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . $cafe['imagem']; ?>" alt="<?= $cafe['nome']; ?>">
                         </div>
                         <p><?= $cafe['nome']; ?></p>
                         <p><?= $cafe['descricao']; ?></p>
@@ -69,13 +69,13 @@
         <section class="container-almoco">
             <div class="container-almoco-titulo">
                 <h3>Opções para o Almoço</h3>
-                <img class= "ornaments" src="<?= dirname($_SERVER['PHP_SELF'])  . 'img' . DIRECTORY_SEPARATOR . 'ornaments-coffee.png'; ?>" alt="ornaments">
+                <img class= "ornaments" src="<?= dirname($_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'ornaments-coffee.png'; ?>" alt="ornaments">
             </div>
             <div class="container-almoco-produtos">
                 <?php foreach ($produtosAlmoco as $almoco): ?>
                     <div class="container-produto">
                         <div class="container-foto">
-                            <img src="<?= dirname($_SERVER['PHP_SELF'])  . 'img' . DIRECTORY_SEPARATOR . $almoco['imagem']; ?>">
+                            <img src="<?= dirname($_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . $almoco['imagem']; ?>">
                         </div>
                         <p><?= $almoco['nome']; ?></p>
                         <p><?= $almoco['descricao']; ?></p>
