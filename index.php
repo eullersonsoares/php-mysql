@@ -1,5 +1,8 @@
 <?php
+
     require_once 'src/conexao-db.php';
+    require_once 'src/Modelo/Produto.php';
+    
     $sql1 = 'SELECT * FROM produtos WHERE tipo = "Café" ORDER BY preco ASC';
     $sql2 = 'SELECT * FROM produtos WHERE tipo = "Almoço" ORDER BY preco ASC';
 
@@ -9,18 +12,37 @@
 
         $produtosCafe = $stmt1->fetchAll();
 
+        array_map(function ($produto) {
+            return new Produto(
+                $produto['id'],
+                $produto['title'],
+                $produto['nome'],
+                $produto['descricao'],
+                $produto['imagem'],
+                (float)$produto['preco']
+            );
+        }, $produtosCafe);
+
         $stmt2 = $pdo->prepare($sql2);
         $stmt2->execute();
 
         $produtosAlmoco = $stmt2->fetchAll();
 
+        array_map(function ($produto) {
+            return new Produto(
+                $produto['id'],
+                $produto['title'],
+                $produto['nome'],
+                $produto['descricao'],
+                $produto['imagem'],
+                (float)$produto['preco']
+            );
+        }, $produtosAlmoco);
+
     } catch (PDOException $e) {
         echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
         exit;
     }
-
-    
-
 ?>
 
 <!doctype html>
@@ -57,11 +79,11 @@
                 <?php foreach ($produtosCafe as $cafe):?>
                     <div class="container-produto">
                         <div class="container-foto">
-                            <img src="<?= dirname($_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . $cafe['imagem']; ?>" alt="<?= $cafe['nome']; ?>">
+                            <img src="<?= dirname($_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . $cafe->getImage(); ?>" alt="<?= $cafe->getNome(); ?>">
                         </div>
-                        <p><?= $cafe['nome']; ?></p>
-                        <p><?= $cafe['descricao']; ?></p>
-                        <p>R$ <?= $cafe['preco']; ?></p>
+                        <p><?= $cafe->getNome(); ?></p>
+                        <p><?= $cafe->getDescricao(); ?></p>
+                        <p>R$ <?= $cafe->getPreco(); ?></p>
                     </div>
                 <?php endforeach;?>
             </div>
@@ -75,11 +97,11 @@
                 <?php foreach ($produtosAlmoco as $almoco): ?>
                     <div class="container-produto">
                         <div class="container-foto">
-                            <img src="<?= dirname($_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . $almoco['imagem']; ?>">
+                            <img src="<?= dirname($_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . $almoco->getImage(); ?>">
                         </div>
-                        <p><?= $almoco['nome']; ?></p>
-                        <p><?= $almoco['descricao']; ?></p>
-                        <p>R$ <?= $almoco['preco']; ?></p>
+                        <p><?= $almoco->getNome(); ?></p>
+                        <p><?= $almoco->getDescricao(); ?></p>
+                        <p>R$ <?= $almoco->getPreco(); ?></p>
                     </div>
                 <?php endforeach; ?>
             </div>
