@@ -2,46 +2,15 @@
 
     require_once 'src/conexao-db.php';
     require_once 'src/Modelo/Produto.php';
+    require_once 'src/Repositorio/ProdutoRepositorio.php';
     
-    $sql1 = 'SELECT * FROM produtos WHERE tipo = "Café" ORDER BY preco ASC';
-    $sql2 = 'SELECT * FROM produtos WHERE tipo = "Almoço" ORDER BY preco ASC';
+    
+    $produtosRepositorio = new ProdutoRepositorio($pdo);
+    $produtosCafe = $produtosRepositorio->opcoesCafe();
+    $produtosAlmoco = $produtosRepositorio->opcoesAlmoco();
 
-    try {
-        $stmt1 = $pdo->prepare($sql1);
-        $stmt1->execute();
-
-        $produtosCafe = $stmt1->fetchAll();
-
-        array_map(function ($produto) {
-            return new Produto(
-                $produto['id'],
-                $produto['title'],
-                $produto['nome'],
-                $produto['descricao'],
-                $produto['imagem'],
-                (float)$produto['preco']
-            );
-        }, $produtosCafe);
-
-        $stmt2 = $pdo->prepare($sql2);
-        $stmt2->execute();
-
-        $produtosAlmoco = $stmt2->fetchAll();
-
-        array_map(function ($produto) {
-            return new Produto(
-                $produto['id'],
-                $produto['title'],
-                $produto['nome'],
-                $produto['descricao'],
-                $produto['imagem'],
-                (float)$produto['preco']
-            );
-        }, $produtosAlmoco);
-
-    } catch (PDOException $e) {
-        echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
-        exit;
+    function asset($path) {
+        return '/' . ltrim($path, '/');
     }
 ?>
 
@@ -61,47 +30,53 @@
     <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&display=swap" rel="stylesheet">
     <title>Serenatto - Cardápio</title>
 </head>
+
 <body>
     <main>
         <section class="container-banner">
             <div class="container-texto-banner">
-                <img src="<?= dirname($_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'logo-serenatto.png'; ?>" class="logo" alt="logo-serenatto">
+                <img src="<?= asset('img/logo-serenatto.png'); ?>" class="logo" alt="logo-serenatto">
             </div>
         </section>
+
         <h2>Cardápio Digital</h2>
+
         <section class="container-cafe-manha">
             <div class="container-cafe-manha-titulo">
                 <h3>Opções para o Café</h3>
-                <img class= "ornaments" src="<?= dirname($_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'ornaments-coffee.png'; ?>" alt="ornaments">
+                <img class="ornaments" src="<?= asset('img/ornaments-coffee.png'); ?>" alt="ornaments">
             </div>
-            <div class="container-cafe-manha-produtos">
 
-                <?php foreach ($produtosCafe as $cafe):?>
+            <div class="container-cafe-manha-produtos">
+                <?php foreach ($produtosCafe as $cafe): ?>
                     <div class="container-produto">
                         <div class="container-foto">
-                            <img src="<?= dirname($_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . $cafe->getImage(); ?>" alt="<?= $cafe->getNome(); ?>">
+                            <img src="<?= asset('img/' . $cafe->getImagem()); ?>" alt="<?= $cafe->getNome(); ?>">
                         </div>
                         <p><?= $cafe->getNome(); ?></p>
                         <p><?= $cafe->getDescricao(); ?></p>
-                        <p>R$ <?= $cafe->getPreco(); ?></p>
+                        <p>R$ <?= $cafe->getPrecoFormatado(); ?></p>
                     </div>
-                <?php endforeach;?>
+                <?php endforeach; ?>
             </div>
         </section>
+
         <section class="container-almoco">
             <div class="container-almoco-titulo">
                 <h3>Opções para o Almoço</h3>
-                <img class= "ornaments" src="<?= dirname($_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . 'ornaments-coffee.png'; ?>" alt="ornaments">
+                <img class="ornaments" src="<?= asset('img/ornaments-coffee.png'); ?>" alt="ornaments">
             </div>
+
             <div class="container-almoco-produtos">
                 <?php foreach ($produtosAlmoco as $almoco): ?>
                     <div class="container-produto">
                         <div class="container-foto">
-                            <img src="<?= dirname($_SERVER['PHP_SELF']) . DIRECTORY_SEPARATOR . 'img' . DIRECTORY_SEPARATOR . $almoco->getImage(); ?>">
+                            <img src="<?= asset('img/' . $almoco->getImagem()); ?>" alt="<?= $almoco->getNome(); ?>">
                         </div>
                         <p><?= $almoco->getNome(); ?></p>
                         <p><?= $almoco->getDescricao(); ?></p>
-                        <p>R$ <?= $almoco->getPreco(); ?></p>
+                        <p>R$ <?= $almoco->getPrecoFormatado();
+                        ; ?></p>
                     </div>
                 <?php endforeach; ?>
             </div>
