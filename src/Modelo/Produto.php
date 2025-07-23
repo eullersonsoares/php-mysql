@@ -2,17 +2,17 @@
 
 class produto
 {
-    private int $id;
-    private string $title;
+    private ?int $id;
+    private string $tipo;
     private string $nome;
     private string $descricao;
     private string $imagem;
     private float $preco;
 
-    public function __construct(int $id, string $title, string $nome, string $descricao, string $imagem, float $preco)
+    public function __construct(?int $id, string $tipo, string $nome, string $descricao, string $imagem, float $preco)
     {
         $this->id = $id;
-        $this->title = $title;
+        $this->tipo = $tipo;
         $this->nome = $nome;
         $this->descricao = $descricao;
         $this->imagem = $imagem;
@@ -24,9 +24,9 @@ class produto
         return $this->id;
     }
 
-    public function getTitle(): string
+    public function getTipo(): string
     {
-        return $this->title;
+        return $this->tipo;
     }
 
     public function getNome(): string
