@@ -1,6 +1,6 @@
 <?php
 
-class produto
+class Produto
 {
     private ?int $id;
     private string $tipo;
@@ -52,6 +52,11 @@ class produto
     public function getPrecoFormatado(): string
     {
         return "R$ " . number_format($this->preco, 2);
+    }
+
+    public function setImagem(string $path): void 
+    {
+        $this->imagem = $path;
     }
 
 }

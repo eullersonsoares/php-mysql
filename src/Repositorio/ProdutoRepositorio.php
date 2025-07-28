@@ -96,4 +96,29 @@ class ProdutoRepositorio
         $stmt->bindValue(5, $produto->getImagem());
         $stmt->execute();
     }
+
+    public function editar(produto $produto): void
+    {
+        $sql = "UPDATE produtos SET tipo = ?, nome = ?, descricao = ?, preco = ?, imagem = ? WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(1, $produto->getTipo());
+        $stmt->bindValue(2, $produto->getNome());
+        $stmt->bindValue(3, $produto->getDescricao());
+        $stmt->bindValue(4, $produto->getPreco());
+        $stmt->bindValue(5, $produto->getImagem());
+        $stmt->bindValue(6, $produto->getId());
+
+        $stmt->execute();
+    }
+
+    public function buscarProduto(int $id):produto
+    {
+        $sql = "SELECT * FROM produtos WHERE id = ?";
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindValue(1, $id);
+        $stmt->execute();
+        $produto = $stmt->fetch();
+
+        return $this->formatarDados([$produto])[0];
+    }
 }

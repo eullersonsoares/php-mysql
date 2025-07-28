@@ -1,23 +1,34 @@
 <?php
-    require_once 'src/conexao-db.php';
-    require_once 'src/Modelo/Produto.php';
-    require_once 'src/Repositorio/ProdutoRepositorio.php';
+require_once 'src/conexao-db.php';
+require_once 'src/Modelo/Produto.php';
+require_once 'src/Repositorio/ProdutoRepositorio.php';
 
-    if(isset($_POST["cadastro"])) {
-        $produto = new Produto(
-            null,
-            $_POST["tipo"],
-            $_POST["nome"],
-            $_POST["descricao"],
-            $_POST["imagem"],
-            $_POST["preco"],
-        );
-        
-        $produtosRepositorio = new ProdutoRepositorio($pdo);
-        $produtosRepositorio->cadastrar($produto); 
-        header("Location: admin.php");
+if (isset($_POST["cadastro"])) {
+
+    $nomeImagem = "";
+
+    if (isset($_FILES["imagem"]) && $_FILES["imagem"]["error"] === UPLOAD_ERR_OK) {
+        $nomeImagem = uniqid() . "_" . basename($_FILES["imagem"]["name"]);
+        $destino = __DIR__ . "/img/" . $nomeImagem;
+        move_uploaded_file($_FILES["imagem"]["tmp_name"], $destino);
     }
+
+    $produto = new Produto(
+        null,
+        $_POST["tipo"],
+        $_POST["nome"],
+        $_POST["descricao"],
+        $nomeImagem,
+        $_POST["preco"]
+    );
+
+    $produtosRepositorio = new ProdutoRepositorio($pdo);
+    $produtosRepositorio->cadastrar($produto);
+    header("Location: admin.php");
+    exit;
+}
 ?>
+
 
 <!doctype html>
 <html lang="pt-br">
@@ -45,7 +56,7 @@
         <img class= "ornaments" src="img/ornaments-coffee.png" alt="ornaments">
     </section>
     <section class="container-form">
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
 
             <label for="nome">Nome</label>
             <input type="text" id="nome" name="nome" placeholder="Digite o nome do produto" required>
